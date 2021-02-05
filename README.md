@@ -1,6 +1,6 @@
-# Telegra.ph
+# 📝 Telegra.ph
 
-📝 Interaction with Telegra.ph.
+Interaction with Telegra.ph.
 
 ## Installation
 ```bash
