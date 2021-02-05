@@ -1,6 +1,6 @@
 # 📝 Telegra.ph
 
-Interaction with Telegra.ph.
+Interaction with [Telegra.ph](https://telegra.ph/).
 
 ## Installation
 ```bash
