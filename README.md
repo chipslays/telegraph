@@ -9,7 +9,7 @@ $ composer require chipslays/telegraph
 
 ## Methods
 
-### Upload Image
+### `upload`
 
 Upload image to Telegra.ph:
 
