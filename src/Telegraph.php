@@ -14,7 +14,7 @@ class Telegraph
      */
     public static function upload($images) : array
     {
-        $premalinks = [];
+        $permalinks = [];
         
         $curl = curl_init();
 
@@ -42,11 +42,11 @@ class Telegraph
             curl_setopt_array($curl, $options);
     
             $response = json_decode(curl_exec($curl), true);
-            $premalinks[] = self::BASE_URL . $response[0]['src'] ?? null;
+            $permalinks[] = self::BASE_URL . $response[0]['src'] ?? null;
         }
 
         curl_close($curl);
 
-        return $premalinks;
+        return $permalinks;
     }
 }
