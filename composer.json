@@ -1,0 +1,13 @@
+{
+    "name": "chipslays/telegraph",
+    "description": "Interaction with Telegra.ph.",
+    "type": "library",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Chipslays\\Telegraph\\": "src/"
+        },
+        "files": ["src/Helpers.php"]
+    }
+}

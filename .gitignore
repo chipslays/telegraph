@@ -1,0 +1,5 @@
+.vscode
+vendor
+composer.lock
+test.php
+captcha.png
