@@ -10,7 +10,7 @@ class Telegraph
      * Upload images to Telegra.ph
      *
      * @param string|array $image Path to image file
-     * @return array Array with permalinks for uplaoded images
+     * @return array Array with permalinks for uploaded images
      */
     public static function upload($images) : array
     {
