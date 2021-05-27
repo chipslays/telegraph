@@ -1,4 +1,4 @@
-# 📝 Telegra.ph
+# 📝 PHP Telegraph API Client
 
 ![Packagist Version](https://img.shields.io/packagist/v/chipslays/telegraph)
 ![GitHub](https://img.shields.io/github/license/chipslays/telegraph)
