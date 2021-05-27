@@ -28,9 +28,10 @@ class PageList
 
     public function __construct(Collection $data)
     {
+        $this->data = $data;
         $this->totalCount = $data->get('total_count', 0);
 
-        foreach ($data['pages'] as $page) {
+        foreach ($data->get('pages', []) as $page) {
             $this->pages[] = new Page(collection($page));
         }
     }
