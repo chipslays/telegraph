@@ -1,27 +1,31 @@
-<?php 
+<?php
 
 namespace Chipslays\Telegraph;
 
-class Telegraph
+use Chipslays\Telegraph\Exceptions\RequestException;
+
+class File
 {
     const BASE_URL = 'https://telegra.ph';
 
     /**
-     * Upload images to Telegra.ph
+     * FIXME: Old part of package, code refactoring is needed.
      *
-     * @param string|array $image Path to image file
-     * @return array Array with permalinks for uploaded images
+     * Upload files to Telegra.ph.
+     *
+     * @param string|array $files Path to local file.
+     * @return array Array with permalinks for uploaded files.
      */
-    public static function upload($images) : array
+    public static function upload($files): array
     {
-        $permalinks = [];
-        
+        $links = [];
+
         $curl = curl_init();
 
         $options = [
             CURLOPT_URL => self::BASE_URL . '/upload/',
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_TIMEOUT => 5,
+            CURLOPT_TIMEOUT => 30,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POST => 1,
             CURLOPT_HTTPHEADER => [
@@ -32,21 +36,25 @@ class Telegraph
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
             ],
         ];
-       
-        foreach ((array) $images as $image) {
 
+        foreach ((array) $files as $file) {
             $options[CURLOPT_POSTFIELDS] = [
-                'file' => new \CurlFile($image),
+                'file' => new \CurlFile($file),
             ];
 
             curl_setopt_array($curl, $options);
-    
+
             $response = json_decode(curl_exec($curl), true);
-            $permalinks[] = self::BASE_URL . $response[0]['src'] ?? null;
+
+            if (isset($response['error'])) {
+                throw new RequestException($response['error']);
+            }
+
+            $links[] = self::BASE_URL . $response[0]['src'] ?? null;
         }
 
         curl_close($curl);
 
-        return $permalinks;
+        return $links;
     }
 }
