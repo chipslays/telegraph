@@ -7,59 +7,66 @@ Interaction with [Telegra.ph](https://telegra.ph/).
 $ composer require chipslays/telegraph
 ```
 
+## Usage
+
+### Telegraph API
+
+```php
+use Chipslays\Telegraph\Client;
+
+require __DIR__ . '/vendor/autoload.php';
+
+$client = new Client;
+
+/** create new account */
+$account = $client->createAccount('chipslays');
+$token = $account->getAccessToken(); // store this token in safe place for reuse
+
+/** create new page */
+$page = $client->createPage($token, 'New page', 'Hello world!');
+
+print_r($page->toArray());
+```
+
+### Upload files
+
+```php
+use Chipslays\Telegraph\File;
+
+require __DIR__ . '/vendor/autoload.php';
+
+$links = File::upload('video.mp4');
+$links = File::upload('nudes.jpg');
+$links = File::upload(['video.mp4', 'nudes.jpg']);
+
+// helper function
+$links = upload_files('video.mp4');
+$links = upload_files(['video.mp4', 'image.png']);
+
+print_r($links);
+
+// Array
+// (
+//     [0] => https://telegra.ph/file/xxxxxxxxxx.mp4
+//     [1] => https://telegra.ph/file/xxxxxxxxxx.png
+// )
+```
+
+## Examples
+
+See examples [here](/examples).
+
 ## Methods
 
-### `upload`
+See all available methods [here](/src/Traits/Methods.php).
 
-Upload image to Telegra.ph:
+See all predefined elements [here](/src/Types/Elements/Element.php).
 
-```
-Telegraph::upload(string|array $images) : array
-```
+## Credits
 
-Upload single image:
+- [Chipslays](https://github.com/chipslays)
+- [All Contributors](../../contributors)
 
-```php
-use Chipslays\Telegraph\Telegraph;
+## License
 
-require __DIR__ . '/vendor/autoload.php';
-
-$response = Telegraph::upload('potato.png');
-
-print_r($response);
-
-Array
-(
-    [0] => https://telegra.ph/file/5a4277524d8e6da5c186c.png
-)
-```
-
-Upload multiple images:
-
-```php
-use Chipslays\Telegraph\Telegraph;
-
-require __DIR__ . '/vendor/autoload.php';
-
-$response = Telegraph::upload([
-    'potato.png', 
-    'chips.jpg', 
-    'dickpic.png',
-]);
-
-print_r($response);
-
-Array
-(
-    [0] => https://telegra.ph/file/5a4277524d8e6da5c186c.png
-    [1] => https://telegra.ph/file/dc123c67d2b244727c1f7.png
-    [2] => https://telegra.ph/file/8ae2555d4dc97883f423d.png
-)
-```
-
-Short alias `upload_image` function.
-
-```php
-$response = upload_image('potato.png');
-$response = upload_image(['potato.png', 'chips.jpg']);
-```
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

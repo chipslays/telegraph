@@ -1,13 +1,16 @@
 {
     "name": "chipslays/telegraph",
-    "description": "Interaction with Telegra.ph.",
+    "description": "PHP client for Telegraph API.",
     "type": "library",
     "license": "MIT",
-    "require": {},
+    "require": {
+        "guzzlehttp/guzzle": "^7.3",
+        "chipslays/collection": "^1.0"
+    },
     "autoload": {
         "psr-4": {
             "Chipslays\\Telegraph\\": "src/"
         },
-        "files": ["src/Helpers.php"]
+        "files": ["helpers.php"]
     }
 }
