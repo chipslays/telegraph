@@ -1,6 +1,6 @@
 # 📝 Telegra.ph
 
-Interaction with [Telegra.ph](https://telegra.ph/).
+PHP client for [Telegra.ph](https://telegra.ph/) API.
 
 ## Installation
 ```bash
