@@ -1,5 +1,8 @@
 # 📝 Telegra.ph
 
+![Packagist Version](https://img.shields.io/packagist/v/chipslays/telegraph)
+![GitHub](https://img.shields.io/github/license/chipslays/telegraph)
+
 PHP client for [Telegra.ph](https://telegra.ph/) API.
 
 ## Installation
