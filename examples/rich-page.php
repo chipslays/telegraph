@@ -80,3 +80,12 @@ $page = $client->createPage($token, 'Rich page', $content);
 
 print_r($page->toArray());
 
+// Array
+// (
+//     [path] => Rich-page-05-28-2
+//     [url] => https://telegra.ph/Rich-page-05-28-2
+//     [title] => Rich page
+//     [description] =>
+//     [views] => 0
+//     [can_edit] => 1
+// )
