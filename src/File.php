@@ -14,9 +14,9 @@ class File
      * Upload files to Telegra.ph.
      *
      * @param string|array $files Path to local file.
-     * @return array Array with permalinks for uploaded files.
+     * @return array|bool Array with permalinks for uploaded files, bool False on error.
      */
-    public static function upload($files): array
+    public static function upload($files)
     {
         $links = [];
 
@@ -42,9 +42,13 @@ class File
                 'file' => new \CurlFile($file),
             ];
 
-            curl_setopt_array($curl, $options);
+            @curl_setopt_array($curl, $options);
 
-            $response = json_decode(curl_exec($curl), true);
+            if (!$result = @curl_exec($curl)) {
+                return false;
+            }
+
+            $response = json_decode($result, true);
 
             if (isset($response['error'])) {
                 throw new RequestException($response['error']);
