@@ -63,8 +63,8 @@ abstract class AbstractNodeElement
     }
 
     /**
-     * @param  string  $tag
-     * @return  self
+     * @param string $tag
+     * @return self
      */
     public function setTag(string $tag)
     {
@@ -120,6 +120,9 @@ abstract class AbstractNodeElement
         $this->attrs[$attribute] = $value;
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return [
