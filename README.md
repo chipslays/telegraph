@@ -91,7 +91,7 @@ $imageUrl = File::upload('https://example.com/image.jpg');
 // ['my_nudes' => 'https://telegra.ph/*, ....]
 $imageUrl = File::upload([
     'my_nudes' => '/path/to/local/image.jpg',
-    'home_vidoe_with_my_gf' => '/path/to/local/video.mp4',
+    'home_video_with_my_gf' => '/path/to/local/video.mp4',
 ]);
 ```
 
