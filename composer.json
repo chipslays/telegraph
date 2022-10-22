@@ -1,16 +1,15 @@
 {
     "name": "chipslays/telegraph",
-    "description": "PHP client for Telegraph API.",
+    "description": "Telegraph API Client for PHP",
+    "keywords": ["telegraph", "api", "client", "wrapper"],
     "type": "library",
     "license": "MIT",
-    "require": {
-        "guzzlehttp/guzzle": "^7.3",
-        "chipslays/collection": "^1.0"
-    },
     "autoload": {
         "psr-4": {
-            "Chipslays\\Telegraph\\": "src/"
-        },
-        "files": ["helpers.php"]
+            "Telegraph\\": "src/"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^6.1"
     }
 }

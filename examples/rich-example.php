@@ -1,35 +1,12 @@
-# Telegraph API Client for PHP
+<?php
 
-Telegraph is an anonymous blogging platform, a free publishing tool created by Telegram.
-
-## Installation
-
-```bash
-composer require chipslays/telegraph
-```
-
-## Usage
-
-### Easy Peasy Mode
-
-```php
-$client = new Telegraph\Client;
-
-$account = $client->createAccount('johndoe', 'John Doe', 'https://example.com');
-
-$page = $account->createPage('Hello World', 'This is a Hello World example.');
-
-echo $page->getUrl(); // https://telegra.ph/Hello-World-10-21-12
-```
-
-### Hard Mode
-
-```php
 use Telegraph\Client;
 use Telegraph\Element;
 use Telegraph\File;
 use Telegraph\Types\Account;
 use Telegraph\Types\NodeElement;
+
+require __DIR__ . '/../vendor/autoload.php';
 
 $client = new Client;
 
@@ -74,41 +51,3 @@ $page = $account->createPage(
 );
 
 echo $page->getUrl(); // https://telegra.ph/Rich-Example-10-21
-```
-
-Upload files to Telegraph server.
-
-```php
-use Telegraph\File;
-
-// Returns string
-$imageUrl = File::upload('/path/to/local/image.jpg');
-
-// Can pass url
-$imageUrl = File::upload('https://example.com/image.jpg');
-
-// Returns array with preserved keys
-// ['my_nudes' => 'https://telegra.ph/*, ....]
-$imageUrl = File::upload([
-    'my_nudes' => '/path/to/local/image.jpg',
-    'home_vidoe_with_my_gf' => '/path/to/local/video.mp4',
-]);
-```
-
-## Examples
-
-You can found examples [here](/examples).
-
-## Documentation
-
-Not found.
-
-So, `Client` class supports all methods of Telegraph API, just start typing e.g. `$client->createAccount(...)` and your IDE helps you.
-
-Use the `Element` helper class to create rich content or use raw `NodeElement` for more flexible stuff.
-
-`Element` uses `NodeElelemt` under the hood. See how it work [here](/src/Element.php).
-
-## License
-
-The MIT License (MIT). Please see [License File](/LICENSE.md) for more information.

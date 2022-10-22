@@ -1,64 +1,94 @@
 <?php
 
-namespace Chipslays\Telegraph;
+namespace Telegraph;
 
-use Chipslays\Telegraph\Exceptions\RequestException;
+use Telegraph\Exceptions\FileUploaderException;
+use CURLFile;
 
+/**
+ * Class for upload files to Telegraph server.
+ */
 class File
 {
-    const BASE_URL = 'https://telegra.ph';
+    protected const TELEGRAPH_BASE_URL = 'https://telegra.ph';
 
     /**
-     * FIXME: Old part of package, code refactoring is needed.
+     * Upload files to Telegra.ph server.
      *
-     * Upload files to Telegra.ph.
+     * Returns array of permalinks for uploaded files or string for signle file,
+     * returns `false` on request error.
      *
-     * @param string|array $files Path to local file.
-     * @return array|bool Array with permalinks for uploaded files, bool False on error.
+     * @param string|array $files Array of local files or signle local file as string.
+     * @return string|array|bool
+     *
+     * @throws FileUploaderException
      */
-    public static function upload($files)
+    public static function upload(string|array $files): string|array|bool
     {
-        $links = [];
-
-        $curl = curl_init();
+        $httpClient = curl_init();
 
         $options = [
-            CURLOPT_URL => self::BASE_URL . '/upload/',
-            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => self::TELEGRAPH_BASE_URL . '/upload/',
+            CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 30,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POST => 1,
-            CURLOPT_HTTPHEADER => [
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POST => true,
+        ];
+
+        $result = [];
+
+        foreach ((array) $files as $key => $file) {
+
+            $options[CURLOPT_POSTFIELDS] = [
+                'file' => new CURLFile($file),
+            ];
+
+            $options[CURLOPT_HTTPHEADER] = [
                 'Content-Type: multipart/form-data',
                 'Accept: application/json, text/javascript, */*; q=0.01',
                 'X-Requested-With' => 'XMLHttpRequest',
-                'Referer' => self::BASE_URL,
-                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
-            ],
-        ];
-
-        foreach ((array) $files as $file) {
-            $options[CURLOPT_POSTFIELDS] = [
-                'file' => new \CurlFile($file),
+                'Referer' => self::TELEGRAPH_BASE_URL,
+                'User-Agent' => self::getRandomUserAgent(),
             ];
 
-            @curl_setopt_array($curl, $options);
+            curl_setopt_array($httpClient, $options);
 
-            if (!$result = @curl_exec($curl)) {
+            if (!$response = @curl_exec($httpClient)) {
                 return false;
             }
 
-            $response = json_decode($result, true);
+            $response = json_decode($response, true);
 
             if (isset($response['error'])) {
-                throw new RequestException($response['error']);
+                throw new FileUploaderException($response['error']);
             }
 
-            $links[] = self::BASE_URL . $response[0]['src'] ?? null;
+            $result[$key] = self::TELEGRAPH_BASE_URL . $response[0]['src'] ?? null;
         }
 
-        curl_close($curl);
+        curl_close($httpClient);
 
-        return $links;
+        return count($result) > 1 ? $result : array_values($result)[0];
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getRandomUserAgent(): string
+    {
+        $userAgents = [
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:105.0) Gecko/20100101 Firefox/105.0',
+            'Mozilla/5.0 (X11; Linux x86_64; rv:105.0) Gecko/20100101 Firefox/105.0',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; rv:105.0) Gecko/20100101 Firefox/105.0',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15',
+        ];
+
+        return $userAgents[array_rand($userAgents)];
     }
 }

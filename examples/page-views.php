@@ -1,9 +1,9 @@
 <?php
 
-use Chipslays\Telegraph\Client;
+use Telegraph\Client;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$client = new Client;
+$client = new Client();
 
-echo $client->getViews('Sample-Page-12-15'); // 1816
+echo $client->getViews('Sample-Page-12-15'); // 2939

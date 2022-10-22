@@ -1,101 +1,100 @@
 <?php
 
-namespace Chipslays\Telegraph\Types;
+namespace Telegraph\Types;
 
-use Chipslays\Collection\Collection;
-
-/**
- * Class Page
- *
- * This object represents a page on Telegraph.
- */
-class Page extends AbstractType
+class Page
 {
     /**
      * Path to the page.
      *
      * @var string
      */
-    private $path;
+    protected string $path;
 
     /**
      * URL of the page.
      *
      * @var string
      */
-    private $url;
+    protected string $url;
 
     /**
      * Title of the page.
      *
      * @var string
      */
-    private $title;
+    protected string $title;
 
     /**
      * Description of the page.
      *
-     * @var string
+     * @var string|null
      */
-    private $description;
+    protected ?string $description;
 
     /**
      * Name of the author, displayed below the title.
      *
-     * @var string
+     * @var string|null
      */
-    private $authorName;
+    protected ?string $authorName;
 
     /**
      * Profile link, opened when users click on the author's name below the title.
+     *
      * Can be any link, not necessarily to a Telegram profile or channel.
      *
-     * @var string
+     * @var string|null
      */
-    private $authorUrl;
+    protected ?string $authorUrl;
 
     /**
      * Image URL of the page.
      *
-     * @var string
+     * @var string|null
      */
-    private $imageUrl;
+    protected ?string $imageUrl;
 
     /**
      * Content of the page.
      *
-     * @var string|NodeElement[]
+     * @var array|null
      */
-    private $content;
+    protected ?array $content;
 
     /**
      * Number of page views for the page.
      *
-     * @var int
+     * @var integer
      */
-    private $views;
+    protected int $views;
 
     /**
-     * Only returned if access_token passed.
-     * True, if the target Telegraph account can edit the page.
+     * Only returned if `access_token` passed.
      *
-     * @var bool
+     * `True`, if the target Telegraph account can edit the page.
+     *
+     * @var boolean|null
      */
-    private $canEdit;
+    protected ?bool $canEdit;
 
-    public function __construct(Collection $data)
+    /**
+     * Constructor.
+     *
+     * @param array $page
+     */
+    public function __construct(array $page)
     {
-        $this->data = $data;
-        $this->path = $data->get('path');
-        $this->url = $data->get('url');
-        $this->title = $data->get('title', '');
-        $this->description = $data->get('description', '');
-        $this->authorName = $data->get('author_name', '');
-        $this->authorUrl = $data->get('author_url', '');
-        $this->imageUrl = $data->get('image_url', '');
-        $this->content = $data->get('content', null);
-        $this->views = $data->get('views', 0);
-        $this->canEdit = $data->get('can_edit', false);
+        $this->path = $page['path'];
+        $this->url = $page['url'];
+        $this->title = $page['title'];
+        $this->description = mb_strlen(trim($page['description'])) > 0 ? $page['description'] : null;
+        $this->authorName = $page['author_name'] ?? null;
+        $this->authorUrl = $page['author_url'] ?? null;
+        $this->imageUrl = $page['image_url'] ?? null;
+        $this->content = $page['content'] ?? null;
+        $this->views = $page['views'];
+        $this->canEdit = $page['can_edit'] ?? null;
     }
 
     /**
@@ -123,40 +122,37 @@ class Page extends AbstractType
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAuthorName(): string
+    public function getAuthorName(): ?string
     {
         return $this->authorName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAuthorUrl(): string
+    public function getAuthUrl(): ?string
     {
         return $this->authorUrl;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImageUrl(): string
+    public function getImageUrl(): ?string
     {
         return $this->imageUrl;
     }
 
-    /**
-     * @return string|NodeElement[]
-     */
     public function getContent()
     {
         return $this->content;
@@ -171,10 +167,67 @@ class Page extends AbstractType
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isCanEdit(): bool
+    public function canEdit(): ?bool
     {
         return $this->canEdit;
+    }
+
+    /**
+     * Get text from page.
+     *
+     * @param array|null $content
+     * @return string
+     */
+    public function getText(?array $content = null): string
+    {
+        $text = '';
+
+        foreach ($content ?? $this->content as $element) {
+            if (is_string($element)) {
+                $text .= $element . "\n";
+                continue;
+            }
+
+            if (!isset($element['tag'])) continue;
+
+            if ($element['tag'] == 'br' || $element['tag'] == 'hr') {
+                $text .= "\n";
+                continue;
+            }
+
+            if ($element['tag'] == 'img') {
+                if (str_starts_with($element['attrs']['src'], '/')) {
+                    $element['attrs']['src'] = 'https://telegra.ph' . $element['attrs']['src'];
+                }
+                $text .= "[IMAGE] -> " . $element['attrs']['src'] . "\n";
+                continue;
+            }
+
+            if ($element['tag'] == 'iframe') {
+                $text .= "\n[IFRAME] -> https://telegra.ph" . $element['attrs']['src'] . "\n";
+                continue;
+            }
+
+            if ($element['tag'] == 'figcaption' && isset($element['children']) && is_string($element['children'][0]) && mb_strlen(trim($element['children'][0])) > 0) {
+                $text .= "[CAPTION] -> ";
+            }
+
+            if (!isset($element['children'])) continue;
+
+            foreach ($element['children'] as $child) {
+                if (is_array($child)) {
+                    $text .= $this->getText([$child]) . "\n";
+                    continue;
+                }
+
+                $text .= $child . "\n";
+            }
+        }
+
+        $text = trim(preg_replace("/(\r?\n){2,}/", "\n\n", $text));
+
+        return $text;
     }
 }

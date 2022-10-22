@@ -1,14 +1,9 @@
 <?php
 
-namespace Chipslays\Telegraph\Types;
-
-use Chipslays\Collection\Collection;
+namespace Telegraph\Types;
 
 /**
- * Class PageList
- *
- * This object represents a list of Telegraph articles belonging to an account.
- * Most recently created articles first.
+ * Class represents a list of Telegraph articles belonging to an account.
  */
 class PageList
 {
@@ -17,23 +12,27 @@ class PageList
      *
      * @var int
      */
-    private $totalCount;
+    protected int $totalCount;
 
     /**
      * Requested pages of the target Telegraph account.
      *
      * @var Page[]
      */
-    private $pages = [];
+    private array $pages = [];
 
-    public function __construct(Collection $data)
+    /**
+     * Constructor.
+     *
+     * @param array $data
+     */
+    public function __construct(array $data)
     {
-        $this->data = $data;
-        $this->totalCount = $data->get('total_count', 0);
-
-        foreach ($data->get('pages', []) as $page) {
-            $this->pages[] = new Page(collection($page));
+        foreach ($data['pages'] as $page) {
+            $this->pages[] = new Page($page);
         }
+
+        $this->totalCount = $data['total_count'];
     }
 
     /**
@@ -41,22 +40,27 @@ class PageList
      *
      * @return int
      */
-    public function getTotalCount()
+    public function getTotalCount(): int
     {
         return $this->totalCount;
     }
 
     /**
-     * Get requested pages of the target Telegraph account.
-     *
      * @return Page[]
      */
-    public function getPages()
+    public function getPages(): array
     {
         return $this->pages;
     }
 
-    public function next()
+    /**
+     * Shift element from array of pages.
+     *
+     * Useful for use in loops like `while`.
+     *
+     * @return Page|null
+     */
+    public function next(): ?Page
     {
         return array_shift($this->pages);
     }
