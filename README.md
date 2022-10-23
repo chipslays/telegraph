@@ -4,6 +4,8 @@ Telegraph is an anonymous blogging platform, a free publishing tool created by T
 
 ## Installation
 
+Install latest 3.x version via Composer.
+
 ```bash
 composer require chipslays/telegraph
 ```
