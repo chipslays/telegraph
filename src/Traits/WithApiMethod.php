@@ -8,19 +8,34 @@ use CurlHandle;
 
 trait WithApiMethod
 {
+    /**
+     * @var CurlHandle
+     */
     protected CurlHandle $httpClient;
 
-    public function setHttpClient(CurlHandle $httpClient)
+    /**
+     * @param CurlHandle $httpClient
+     * @return self
+     */
+    public function setHttpClient(CurlHandle $httpClient): self
     {
         $this->httpClient = $httpClient;
+
+        return $this;
     }
 
+    /**
+     * @return CurlHandle
+     */
     public function getHttpClient(): CurlHandle
     {
         return $this->httpClient;
     }
 
-    protected function setupDefaultHttpClient()
+    /**
+     * @return void
+     */
+    protected function setupDefaultHttpClient(): void
     {
         $httpClient = curl_init();
 
@@ -31,6 +46,14 @@ trait WithApiMethod
         $this->setHttpClient($httpClient);
     }
 
+    /**
+     * @param string $method
+     * @param array $params
+     * @return array
+     *
+     * @throws HttpClientException If has CURL errors.
+     * @throws TelegraphApiException If Telegraph API returns `ok == false`.
+     */
     public function api(string $method, array $params = []): array
     {
         curl_setopt($this->httpClient, CURLOPT_URL, 'https://api.telegra.ph/' . $method);

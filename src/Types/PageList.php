@@ -4,6 +4,8 @@ namespace Telegraph\Types;
 
 /**
  * Class represents a list of Telegraph articles belonging to an account.
+ *
+ * Most recently created articles first.
  */
 class PageList
 {

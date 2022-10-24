@@ -5,6 +5,9 @@ namespace Telegraph\Types;
 use Telegraph\Exceptions\BadTypeParameterException;
 use JsonSerializable;
 
+/**
+ * Class represents a DOM element node.
+ */
 class NodeElement implements JsonSerializable
 {
     protected $availableTags = [
@@ -34,6 +37,16 @@ class NodeElement implements JsonSerializable
         'video',
     ];
 
+    /**
+     * Constructor.
+     *
+     * @param string $tag
+     * @param string|string[] $children
+     * @param array $attrs
+     * @param bool $forceTag
+     *
+     * @throws BadTypeParameterException If `tag` not in allowed list or use `forceTag` parameter for avoid it.
+     */
     public function __construct(
         protected string $tag,
         protected string|array $children = [],
@@ -132,7 +145,7 @@ class NodeElement implements JsonSerializable
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasChildren(): bool
     {

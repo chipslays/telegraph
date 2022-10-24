@@ -10,11 +10,15 @@ use Telegraph\Client;
  */
 class Account
 {
+    /**
+     * @var array
+     */
     protected $default = [
+        // public token, it's ok!
+        'access_token' => '0baab53f5dc2ac3a3ec96253a634224eb63e908dd2e00aa082a245e3fcb9',
         'short_name' => '',
         'author_name' => '',
         'author_url' => '',
-        'access_token' => '0baab53f5dc2ac3a3ec96253a634224eb63e908dd2e00aa082a245e3fcb9', // public token, it's ok!
         'auth_url' => '',
     ];
 
@@ -63,7 +67,7 @@ class Account
     /**
      * Number of pages belonging to the Telegraph account.
      *
-     * @var integer|null
+     * @var int|null
      */
     protected ?int $pageCount;
 
@@ -108,25 +112,25 @@ class Account
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getShortName(): string
+    public function getShortName(): ?string
     {
         return $this->shortName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAuthorName(): string
+    public function getAuthorName(): ?string
     {
         return $this->authorName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAuthorUrl(): string
+    public function getAuthorUrl(): ?string
     {
         return $this->authorUrl;
     }
@@ -140,9 +144,9 @@ class Account
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAuthUrl(): string
+    public function getAuthUrl(): ?string
     {
         return $this->authUrl;
     }
@@ -160,7 +164,7 @@ class Account
      *
      * Available fields: `short_name`, `author_name`, `author_url`, `auth_url`, `page_count`.
      *
-     * @param array $fields [Required] List of account fields to return.
+     * @param string[] $fields [Required] List of account fields to return.
      * @return Account
      */
     public function getAccountInfo(
@@ -210,10 +214,10 @@ class Account
      * On success, returns a `Page` object.
      *
      * @param string $title [Required, 1-256 characters] Page title.
-     * @param string|array $content [Required, up to 64 KB] Content of the page.
+     * @param string|NodeElement[] $content [Required, up to 64 KB] Content of the page.
      * @param string|null $authorName [Optional, 0-128 characters] Author name, displayed below the article's title.
      * @param string|null $authorUrl [Optional, 0-512 characters] Can be any link, not necessarily to a Telegram profile or channel.
-     * @param boolean $returnContent [Optional] If `true`, a content field will be returned in the `Page` object.
+     * @param bool $returnContent [Optional] If `true`, a content field will be returned in the `Page` object.
      * @return Page
      */
     public function createPage(
@@ -233,10 +237,10 @@ class Account
      *
      * @param string|Page $path [Required] Path to the Telegraph page (e.g. `http://telegra.ph/Title-12-31` or `Title-12-31`).
      * @param string $title [Required, 1-256 characters] Page title.
-     * @param string|array $content [Required, up to 64 KB] Content of the page.
+     * @param string|NodeElement[] $content [Required, up to 64 KB] Content of the page.
      * @param string|null $authorName [Optional, 0-128 characters] Author name, displayed below the article's title.
      * @param string|null $authorUrl [Optional, 0-512 characters] Can be any link, not necessarily to a Telegram profile or channel.
-     * @param boolean $returnContent [Optional] If `true`, a content field will be returned in the `Page` object.
+     * @param bool $returnContent [Optional] If `true`, a content field will be returned in the `Page` object.
      * @return Page
      */
     public function editPage(
@@ -255,8 +259,8 @@ class Account
      *
      * Returns a `PageList` object, sorted by most recently created pages first.
      *
-     * @param integer $offset [Optional] Sequential number of the first page to be returned.
-     * @param integer $limit [Optional, 0-200] Limits the number of pages to be retrieved.
+     * @param int $offset [Optional] Sequential number of the first page to be returned.
+     * @param int $limit [Optional, 0-200] Limits the number of pages to be retrieved.
      * @return PageList
      */
     public function getPageList(int $offset = 0, int $limit = 50): PageList

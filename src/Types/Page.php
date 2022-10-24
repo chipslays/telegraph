@@ -2,6 +2,9 @@
 
 namespace Telegraph\Types;
 
+/**
+ * Class represents a page on Telegraph.
+ */
 class Page
 {
     /**
@@ -65,7 +68,7 @@ class Page
     /**
      * Number of page views for the page.
      *
-     * @var integer
+     * @var int
      */
     protected int $views;
 
@@ -74,7 +77,7 @@ class Page
      *
      * `True`, if the target Telegraph account can edit the page.
      *
-     * @var boolean|null
+     * @var bool|null
      */
     protected ?bool $canEdit;
 

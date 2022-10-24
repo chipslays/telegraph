@@ -85,7 +85,7 @@ class Client
      * Available fields: `short_name`, `author_name`, `author_url`, `auth_url`, `page_count`.
      *
      * @param string|Account $accessToken [Required] Access token of the Telegraph account.
-     * @param array $fields [Required] List of account fields to return.
+     * @param string[] $fields [Required] List of account fields to return.
      * @return Account
      */
     public function getAccountInfo(
@@ -130,7 +130,7 @@ class Client
      * @param string|NodeElement[] $content [Required, up to 64 KB] Content of the page.
      * @param string|null $authorName [Optional, 0-128 characters] Author name, displayed below the article's title.
      * @param string|null $authorUrl [Optional, 0-512 characters] Can be any link, not necessarily to a Telegram profile or channel.
-     * @param boolean $returnContent [Optional] If `true`, a content field will be returned in the `Page` object.
+     * @param bool $returnContent [Optional] If `true`, a content field will be returned in the `Page` object.
      * @return Page
      */
     public function createPage(
@@ -163,10 +163,10 @@ class Client
      * @param string|Account $accessToken [Required] Access token of the Telegraph account.
      * @param string|Page $path [Required] Path to the Telegraph page (e.g. `http://telegra.ph/Title-12-31` or `Title-12-31`).
      * @param string $title [Required, 1-256 characters] Page title.
-     * @param string|array $content [Required, up to 64 KB] Content of the page.
+     * @param string|NodeElement[] $content [Required, up to 64 KB] Content of the page.
      * @param string|null $authorName [Optional, 0-128 characters] Author name, displayed below the article's title.
      * @param string|null $authorUrl [Optional, 0-512 characters] Can be any link, not necessarily to a Telegram profile or channel.
-     * @param boolean $returnContent [Optional] If `true`, a content field will be returned in the `Page` object.
+     * @param bool $returnContent [Optional] If `true`, a content field will be returned in the `Page` object.
      * @return Page
      */
     public function editPage(
@@ -195,8 +195,8 @@ class Client
      *
      * Returns a `Page` object on success.
      *
-     * @param string $path [Required] Path to the Telegraph page (e.g. `http://telegra.ph/Title-12-31` or `Title-12-31`).
-     * @param boolean $returnContent [Optional] If `true`, content field will be returned in `Page` object.
+     * @param string|Page $path [Required] Path to the Telegraph page (e.g. `http://telegra.ph/Title-12-31` or `Title-12-31`).
+     * @param bool $returnContent [Optional] If `true`, content field will be returned in `Page` object.
      * @return Page
      */
     public function getPage(string|Page $path, bool $returnContent = false): Page
@@ -214,8 +214,8 @@ class Client
      * Returns a `PageList` object, sorted by most recently created pages first.
      *
      * @param string|Account $accessToken [Required] Access token of the Telegraph account.
-     * @param integer $offset [Optional] Sequential number of the first page to be returned.
-     * @param integer $limit [Optional, 0-200] Limits the number of pages to be retrieved.
+     * @param int $offset [Optional] Sequential number of the first page to be returned.
+     * @param int $limit [Optional, 0-200] Limits the number of pages to be retrieved.
      * @return PageList
      */
     public function getPageList(string|Account $accessToken, int $offset = 0, int $limit = 50): PageList
@@ -233,8 +233,8 @@ class Client
      * Get a list of pages belonging to a Telegraph account by pagination.
      *
      * @param string|Account $accessToken
-     * @param integer $offset
-     * @param integer $limit
+     * @param int $offset
+     * @param int $limit
      * @param Closure $callback
      * @return void
      */
@@ -266,12 +266,12 @@ class Client
      *
      * Returns the total number of page views.
      *
-     * @param string $path [Required] Path to the Telegraph page (e.g. `http://telegra.ph/Title-12-31` or `Title-12-31`).
-     * @param integer|null $year [Required if month is passed, 2000-2100] If passed, the number of page views for the requested year will be returned.
-     * @param integer|null $month [Required if day is passed, 1-12] If passed, the number of page views for the requested month will be returned.
-     * @param integer|null $day [Required if hour is passed, 1-31] If passed, the number of page views for the requested day will be returned.
-     * @param integer|null $hour [Optional, 0-24] If passed, the number of page views for the requested hour will be returned.
-     * @return integer
+     * @param string|Page $path [Required] Path to the Telegraph page (e.g. `http://telegra.ph/Title-12-31` or `Title-12-31`).
+     * @param int|null $year [Required if month is passed, 2000-2100] If passed, the number of page views for the requested year will be returned.
+     * @param int|null $month [Required if day is passed, 1-12] If passed, the number of page views for the requested month will be returned.
+     * @param int|null $day [Required if hour is passed, 1-31] If passed, the number of page views for the requested day will be returned.
+     * @param int|null $hour [Optional, 0-24] If passed, the number of page views for the requested hour will be returned.
+     * @return int
      */
     public function getViews(
         string|Page $path,
@@ -291,6 +291,10 @@ class Client
         return $response['views'];
     }
 
+    /**
+     * @param string|Page $path
+     * @return string
+     */
     protected function processPath(string|Page $path): string
     {
         if ($path instanceof Page) {
