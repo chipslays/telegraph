@@ -2,6 +2,7 @@
 
 use Telegraph\Client;
 use Telegraph\Element;
+use Telegraph\File;
 use Telegraph\Types\NodeElement;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -19,6 +20,7 @@ $page = $account->createPage('Article With Images', [
 
     // or upload image by manual
     new NodeElement('img', attrs: ['src' => $imageUrl]),
+    new NodeElement('img', attrs: ['src' => File::upload('/path/to/local/image.png')]),
 ]);
 
 echo $page->getUrl(); // https://telegra.ph/Hello-World-10-24-49
