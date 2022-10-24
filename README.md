@@ -109,7 +109,7 @@ So, `Client` class supports all methods of Telegraph API, just start typing e.g.
 
 Use the `Element` helper class to create rich content or use raw `NodeElement` for more flexible stuff.
 
-`Element` uses `NodeElelemt` under the hood. See how it work [here](/src/Element.php).
+`Element` uses `NodeElement` under the hood. See how it work [here](/src/Element.php).
 
 ## License
 
