@@ -1,4 +1,4 @@
-# Telegraph API Client for PHP
+# Telegraph API Client for PHP >=8.0
 
 Telegraph is an anonymous blogging platform, a free publishing tool created by Telegram.
 
