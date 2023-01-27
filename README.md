@@ -101,7 +101,7 @@ $imageUrl = File::upload([
 
 You can found examples [here](/examples).
 
-[Here](/examples) are really almost all [popular use cases]((/examples)) Telegraph API.
+[Here](/examples) are really almost all [popular use cases](/examples) Telegraph API.
 
 ## Documentation
 
