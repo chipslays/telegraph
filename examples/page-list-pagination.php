@@ -9,7 +9,7 @@ $client = new Client;
 
 $token = '0baab53f5dc2ac3a3ec96253a634224eb63e908dd2e00aa082a245e3fcb9';
 
-$client->getPageListWithPagination($token, 0, 50, function (Page $page) use ($client) {
+$client->getPageListWithPagination($token, offset: 0, limit: 50, function (Page $page) use ($client) {
     $details = $client->getPage($page, true); // get content of page
 
     $text = $details->getText(); // get text (its custom method)
