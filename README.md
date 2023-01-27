@@ -105,11 +105,15 @@ You can found examples [here](/examples).
 
 Not found.
 
-So, `Client` class supports all methods of Telegraph API, just start typing e.g. `$client->createAccount(...)` and your IDE helps you.
+So, code **well documencated**, `Client` class supports all methods of Telegraph API, just start typing e.g. `$client->createAccount(...)` and your IDE helps you.
 
 Use the `Element` helper class to create rich content or use raw `NodeElement` for more flexible stuff.
 
-`Element` uses `NodeElement` under the hood. See how it work [here](/src/Element.php).
+`Element` class uses `NodeElement` under the hood. 
+
+See how it work [here](/src/Element.php).
+
+Good luck stanger.
 
 ## License
 
