@@ -52,7 +52,7 @@ echo "Published: " . $page->url();
 
 ## Usage Examples
 
-You can find code examples [here](/EXAMPLES.md).
+You can find code examples in [examples folder](/examples) or in [EXAMPLES.md](/EXAMPLES.md).
 
 ## License
 
