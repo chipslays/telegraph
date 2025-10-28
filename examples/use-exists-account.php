@@ -1,16 +1,16 @@
 <?php
 
-use Telegraph\TelegraphClient;
+use Telegraph\Telegraph;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 $token = '13a7d37c495d339a2002454f7bfd2d32eb205d5f29c3b7dc3bf5d8ba15d0';
 
 /**
- * Variant 1: Pass token in TelegraphClient constructor
+ * Variant 1: Pass token in Telegraph constructor
  * (This is the recommended approach)
  */
-$telegraph = new TelegraphClient($token);
+$telegraph = new Telegraph($token);
 $account = $telegraph->account();
 $page = $account->createPage(
     title: 'Hello World',
@@ -20,10 +20,10 @@ $page = $account->createPage(
 echo $page->url();
 
 /**
- * Variant 2: Create new TelegraphClient instance when needed
+ * Variant 2: Create new Telegraph instance when needed
  * (For working with multiple accounts)
  */
-$telegraph1 = new TelegraphClient($token);
+$telegraph1 = new Telegraph($token);
 $page = $telegraph1->account()->createPage(
     title: 'Hello World',
     content: 'This is a Hello World example.'
@@ -38,7 +38,7 @@ class AccountManager
 
     public function addAccount(string $name, string $token): void
     {
-        $this->clients[$name] = new TelegraphClient($token);
+        $this->clients[$name] = new Telegraph($token);
     }
 
     public function getAccount(string $name)

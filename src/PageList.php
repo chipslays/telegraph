@@ -31,12 +31,12 @@ class PageList implements \Iterator, \Countable
      * Constructs a list of pages from API response data.
      * Each page in the response is converted to a Page instance.
      *
-     * @param TelegraphClient $client Telegraph client for API requests
+     * @param Telegraph $client Telegraph client for API requests
      * @param array $data API response containing pages array
      * @param string|null $accessToken Access token for page operations
      */
     public function __construct(
-        private readonly TelegraphClient $client,
+        private readonly Telegraph $client,
         array $data,
         private readonly ?string $accessToken = null,
     ) {

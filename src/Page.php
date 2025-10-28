@@ -24,13 +24,13 @@ class Page
     /**
      * Create Page instance
      *
-     * @param TelegraphClient $client Telegraph client for API requests
+     * @param Telegraph $client Telegraph client for API requests
      * @param string|null $path Page path (e.g., 'My-Article-10-28')
      * @param string|null $accessToken Access token for editing operations
      * @param PageData|null $data Pre-loaded page data
      */
     public function __construct(
-        private readonly TelegraphClient $client,
+        private readonly Telegraph $client,
         private readonly ?string $path = null,
         private readonly ?string $accessToken = null,
         ?PageData $data = null,

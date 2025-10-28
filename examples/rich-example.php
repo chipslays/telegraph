@@ -1,10 +1,10 @@
 <?php
 
-use Telegraph\TelegraphClient;
+use Telegraph\Telegraph;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$telegraph = new TelegraphClient();
+$telegraph = new Telegraph();
 
 $account = $telegraph->createAccount(
     shortName: 'TechBlog',
@@ -106,7 +106,7 @@ $page = $account->createPage(
         ->p('Great for step-by-step instructions:')
         ->ol([
             'Install via Composer: composer require chipslays/telegraph',
-            'Create TelegraphClient instance',
+            'Create Telegraph instance',
             'Create or load account',
             'Build content using fluent interface',
             'Publish your page and get URL'
@@ -134,9 +134,9 @@ $page = $account->createPage(
 
         ->pre('<?php
 
-use Telegraph\TelegraphClient;
+use Telegraph\Telegraph;
 
-$telegraph = new TelegraphClient();
+$telegraph = new Telegraph();
 $account = $telegraph->createAccount(
     shortName: \'MyBlog\',
     authorName: \'Author Name\'

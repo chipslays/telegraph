@@ -23,12 +23,12 @@ class Account
     /**
      * Create Account instance
      *
-     * @param TelegraphClient $client Telegraph client for API requests
+     * @param Telegraph $client Telegraph client for API requests
      * @param string|null $accessToken Account access token
      * @param AccountData|null $data Pre-loaded account data
      */
     public function __construct(
-        private readonly TelegraphClient $client,
+        private readonly Telegraph $client,
         private readonly ?string $accessToken = null,
         ?AccountData $data = null,
     ) {

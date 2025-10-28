@@ -1,12 +1,12 @@
 <?php
 
-use Telegraph\TelegraphClient;
+use Telegraph\Telegraph;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 $imageUrl = 'https://avatars.githubusercontent.com/u/19103498?v=4';
 
-$telegraph = new TelegraphClient();
+$telegraph = new Telegraph();
 
 $account = $telegraph->createAccount(
     shortName: 'chipslays',

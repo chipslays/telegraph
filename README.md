@@ -27,10 +27,10 @@ composer require chipslays/telegraph
 ## Quick Start
 
 ```php
-use Telegraph\TelegraphClient;
+use Telegraph\Telegraph;
 
 // Create client
-$telegraph = new TelegraphClient();
+$telegraph = new Telegraph();
 
 // Create account
 $account = $telegraph->createAccount(

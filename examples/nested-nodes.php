@@ -1,10 +1,10 @@
 <?php
 
-use Telegraph\TelegraphClient;
+use Telegraph\Telegraph;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$telegraph = new TelegraphClient();
+$telegraph = new Telegraph();
 
 $account = $telegraph->createAccount(
     shortName: 'chipslays',

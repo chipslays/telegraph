@@ -25,9 +25,9 @@ Complete guide with practical examples for all use cases.
 
 <?php
 
-use Telegraph\TelegraphClient;
+use Telegraph\Telegraph;
 
-$telegraph = new TelegraphClient();
+$telegraph = new Telegraph();
 
 // Create account
 $account = $telegraph->createAccount('MyBlog', 'John Doe');
@@ -45,7 +45,7 @@ echo $page->url(); // https://telegra.ph/My-First-Article-10-28
 ### Using Existing Account
 
 ```php
-$telegraph = new TelegraphClient('your_saved_token');
+$telegraph = new Telegraph('your_saved_token');
 $account = $telegraph->account();
 
 $page = $account->createPage('New Article', 'Content here');
@@ -64,10 +64,10 @@ class AccountManager
 
     public function addAccount(string $name, string $token): void
     {
-        $this->accounts[$name] = new TelegraphClient($token);
+        $this->accounts[$name] = new Telegraph($token);
     }
 
-    public function getAccount(string $name): TelegraphClient
+    public function getAccount(string $name): Telegraph
     {
         return $this->accounts[$name] ?? throw new Exception("Account not found");
     }
@@ -181,7 +181,7 @@ $content = $telegraph->content()
     // Code example
     ->h4('Code Example')
     ->pre('<?php
-$telegraph = new TelegraphClient();
+$telegraph = new Telegraph();
 $account = $telegraph->createAccount("Blog");
 $page = $account->createPage("Title", "Content");
 echo $page->url();')
@@ -295,7 +295,7 @@ $page = $account->createPageFromHtml('Blog Post', $html);
 ```php
 function wordpressToTelegraph(WP_Post $post): string
 {
-    $telegraph = new TelegraphClient($_ENV['TELEGRAPH_TOKEN']);
+    $telegraph = new Telegraph($_ENV['TELEGRAPH_TOKEN']);
     $account = $telegraph->account();
 
     // Get post content
@@ -329,7 +329,7 @@ function mediumToTelegraph(string $mediumUrl): string
     $content = $matches ?? '';[^1]
 
     // Publish to Telegraph
-    $telegraph = new TelegraphClient($_ENV['TELEGRAPH_TOKEN']);
+    $telegraph = new Telegraph($_ENV['TELEGRAPH_TOKEN']);
     $page = $telegraph->account()->createPageFromHtml($title, $content);
 
     return $page->url();
@@ -348,7 +348,7 @@ function mediumToTelegraph(string $mediumUrl): string
 function updatePage(string $path, string $title, string $content): bool
 {
     try {
-        $telegraph = new TelegraphClient($_ENV['TELEGRAPH_TOKEN']);
+        $telegraph = new Telegraph($_ENV['TELEGRAPH_TOKEN']);
         $page = $telegraph->page($path);
 
         // Check if we can edit
@@ -379,7 +379,7 @@ function updatePage(string $path, string $title, string $content): bool
 
 function clonePage(string $sourcePath): Page
 {
-    $telegraph = new TelegraphClient($_ENV['TELEGRAPH_TOKEN']);
+    $telegraph = new Telegraph($_ENV['TELEGRAPH_TOKEN']);
     $account = $telegraph->account();
 
     // Get source page
@@ -403,7 +403,7 @@ function clonePage(string $sourcePath): Page
 
 function bulkUpdateAuthor(string $newAuthorName): void
 {
-    $telegraph = new TelegraphClient($_ENV['TELEGRAPH_TOKEN']);
+    $telegraph = new Telegraph($_ENV['TELEGRAPH_TOKEN']);
     $account = $telegraph->account();
 
     $pages = $account->pages(limit: 200);
@@ -432,7 +432,7 @@ function bulkUpdateAuthor(string $newAuthorName): void
 
 function getPageStats(string $path): array
 {
-    $telegraph = new TelegraphClient();
+    $telegraph = new Telegraph();
     $page = $telegraph->page($path);
 
     return [
@@ -463,11 +463,11 @@ print_r($stats);
 
 class TelegraphAnalytics
 {
-private TelegraphClient $client;
+private Telegraph $client;
 
     public function __construct(string $token)
     {
-        $this->client = new TelegraphClient($token);
+        $this->client = new Telegraph($token);
     }
 
     public function getDashboard(): array
@@ -513,7 +513,7 @@ $dashboard = $analytics->getDashboard();
 
 function exportAnalytics(string $filename): void
 {
-    $telegraph = new TelegraphClient($_ENV['TELEGRAPH_TOKEN']);
+    $telegraph = new Telegraph($_ENV['TELEGRAPH_TOKEN']);
     $pages = $telegraph->account()->pages(limit: 200);
 
     $fp = fopen($filename, 'w');
@@ -545,7 +545,7 @@ use Telegraph\Exceptions\TelegraphException;
 
 function publishWithRetry(string $title, string $content, int $maxRetries = 3): ?Page
 {
-    $telegraph = new TelegraphClient($_ENV['TELEGRAPH_TOKEN']);
+    $telegraph = new Telegraph($_ENV['TELEGRAPH_TOKEN']);
     $account = $telegraph->account();
 
     for ($i = 0; $i < $maxRetries; $i++) {
@@ -641,11 +641,11 @@ if (empty($errors)) {
 
 class NewsletterBuilder
 {
-    private TelegraphClient $telegraph;
+    private Telegraph $telegraph;
 
     public function __construct(string $token)
     {
-        $this->telegraph = new TelegraphClient($token);
+        $this->telegraph = new Telegraph($token);
     }
 
     public function createNewsletter(array $articles): Page
@@ -699,7 +699,7 @@ class ProductCatalog
 {
     public function createCatalogPage(array $products): Page
     {
-        $telegraph = new TelegraphClient($_ENV['TELEGRAPH_TOKEN']);
+        $telegraph = new Telegraph($_ENV['TELEGRAPH_TOKEN']);
 
         $content = $telegraph->content()
             ->h3('Product Catalog')
@@ -734,7 +734,7 @@ class DocsGenerator
 {
     public function generateApiDocs(array $endpoints): Page
     {
-        $telegraph = new TelegraphClient($_ENV['TELEGRAPH_TOKEN']);
+        $telegraph = new Telegraph($_ENV['TELEGRAPH_TOKEN']);
 
         $content = $telegraph->content()
             ->h3('API Documentation')
@@ -775,14 +775,14 @@ class DocsGenerator
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Telegraph\TelegraphClient;
+use Telegraph\Telegraph;
 
 class TelegraphServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->singleton(TelegraphClient::class, function ($app) {
-            return new TelegraphClient(config('services.telegraph.token'));
+        $this->app->singleton(Telegraph::class, function ($app) {
+            return new Telegraph(config('services.telegraph.token'));
         });
     }
 }
@@ -791,7 +791,7 @@ class TelegraphServiceProvider extends ServiceProvider
 class ArticleController extends Controller
 {
     public function __construct(
-        private TelegraphClient $telegraph
+        private Telegraph $telegraph
     ) {}
 
     public function publish(Request $request): JsonResponse
@@ -815,7 +815,7 @@ class ArticleController extends Controller
 # services.yaml
 
 services:
-Telegraph\TelegraphClient:
+Telegraph\Telegraph:
 arguments:
 $accessToken: '%env(TELEGRAPH_TOKEN)%'
 
@@ -827,7 +827,7 @@ $accessToken: '%env(TELEGRAPH_TOKEN)%'
 class PublishController extends AbstractController
 {
     public function __construct(
-        private TelegraphClient $telegraph
+        private Telegraph $telegraph
     ) {}
 
     #[Route('/publish', methods: ['POST'])]
@@ -856,7 +856,7 @@ function publish_to_telegraph($post_id, $post)
         return;
     }
 
-    $telegraph = new Telegraph\TelegraphClient(get_option('telegraph_token'));
+    $telegraph = new Telegraph\Telegraph(get_option('telegraph_token'));
     $html = apply_filters('the_content', $post->post_content);
 
     try {
@@ -884,14 +884,14 @@ function publish_to_telegraph($post_id, $post)
 ```php
 
 // ❌ BAD: Hardcoded token
-$telegraph = new TelegraphClient('13a7d37c495d339a2002454f7bfd2d32eb205d5f29c3b7dc3bf5d8ba15d0');
+$telegraph = new Telegraph('13a7d37c495d339a2002454f7bfd2d32eb205d5f29c3b7dc3bf5d8ba15d0');
 
 // ✅ GOOD: Environment variable
-$telegraph = new TelegraphClient($_ENV['TELEGRAPH_TOKEN']);
+$telegraph = new Telegraph($_ENV['TELEGRAPH_TOKEN']);
 
 // ✅ GOOD: From database
 $token = $userRepository->getTelegraphToken($userId);
-$telegraph = new TelegraphClient($token);
+$telegraph = new Telegraph($token);
 
 ```
 

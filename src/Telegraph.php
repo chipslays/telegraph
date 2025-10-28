@@ -18,7 +18,7 @@ use Telegraph\DTO\AccountData;
  *
  * @see https://telegra.ph/api
  */
-class TelegraphClient
+class Telegraph
 {
     private const API_URL = 'https://api.telegra.ph';
 
