@@ -44,7 +44,7 @@ echo $page->url(); // https://telegra.ph/My-First-Article-10-28
 
 ### Using Existing Account
 
-```
+```php
 $telegraph = new TelegraphClient('your_saved_token');
 $account = $telegraph->account();
 
