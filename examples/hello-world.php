@@ -1,14 +1,20 @@
 <?php
 
-use Telegraph\Client;
+use Telegraph\TelegraphClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$client = new Client;
+$telegraph = new TelegraphClient();
 
-$account = $client->createAccount('johndoe', 'John Doe', 'https://example.com');
+$account = $telegraph->createAccount(
+    shortName: 'johndoe',
+    authorName: 'John Doe',
+    authorUrl: 'https://example.com'
+);
 
-$page = $account->createPage('Hello World', 'This is a Hello World example.');
+$page = $account->createPage(
+    title: 'Hello World',
+    content: 'This is a Hello World example.'
+);
 
-echo $page->getUrl(); // https://telegra.ph/Hello-World-10-21-12
-
+echo $page->url(); // https://telegra.ph/Hello-World-10-28-76

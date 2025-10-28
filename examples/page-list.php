@@ -1,17 +1,19 @@
 <?php
 
-use Telegraph\Client;
+use Telegraph\TelegraphClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$client = new Client;
+$token = '13a7d37c495d339a2002454f7bfd2d32eb205d5f29c3b7dc3bf5d8ba15d0';
 
-$token = '0baab53f5dc2ac3a3ec96253a634224eb63e908dd2e00aa082a245e3fcb9';
+$telegraph = new TelegraphClient($token);
+$account = $telegraph->account();
+
 $offset = 0;
 $limit = 50;
 
-$pages = $client->getPageList($token, $offset, $limit);
+$pages = $account->pages(offset: $offset, limit: $limit);
 
-while ($page = $pages->next()) {
-    echo $page->getTitle() . ', views: ' . $page->getViews() . PHP_EOL;
+foreach ($pages as $page) {
+    echo $page->title() . ', views: ' . $page->viewsCount() . PHP_EOL;
 }

@@ -1,19 +1,24 @@
 <?php
 
-use Telegraph\Client;
-use Telegraph\Element;
+use Telegraph\TelegraphClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$client = new Client;
+$telegraph = new TelegraphClient();
 
-$account = $client->createAccount('chipslays', 'chipslays', 'https://github.com/chipslays');
+$account = $telegraph->createAccount(
+    shortName: 'chipslays',
+    authorName: 'chipslays',
+    authorUrl: 'https://github.com/chipslays'
+);
 
-$page = $account->createPage('Hello World', [
-    Element::bigHeading([
-        Element::link('More Examples Here', 'https://github.com/chipslays/telegraph/tree/v3.x/examples'),
-    ]),
-]);
+$page = $account->createPage(
+    title: 'Hello World',
+    content: $telegraph->content()
+        ->h3(function($b) {
+            $b->link('More Examples Here', 'https://github.com/chipslays/telegraph/tree/v5.x/examples');
+        })
+        ->build()
+);
 
-echo $page->getUrl(); // https://telegra.ph/Hello-World-10-24-49
-
+echo $page->url(); // https://telegra.ph/Hello-World-10-28-77

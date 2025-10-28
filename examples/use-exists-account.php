@@ -1,30 +1,57 @@
 <?php
 
-use Telegraph\Client;
-use Telegraph\Types\Account;
+use Telegraph\TelegraphClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-/**
- * 1 variant.
- *
- * Once pass token in Account.
- */
-$client = new Client;
-$account = new Account('0baab53f5dc2ac3a3ec96253a634224eb63e908dd2e00aa082a245e3fcb9', $client);
-$page = $account->createPage('Hello World', 'This is a Hello World example.');
+$token = '13a7d37c495d339a2002454f7bfd2d32eb205d5f29c3b7dc3bf5d8ba15d0';
 
 /**
- * 2 variant.
- *
- * Pass token in Client methods where it needed. (it more flexible)
+ * Variant 1: Pass token in TelegraphClient constructor
+ * (This is the recommended approach)
  */
+$telegraph = new TelegraphClient($token);
+$account = $telegraph->account();
+$page = $account->createPage(
+    title: 'Hello World',
+    content: 'This is a Hello World example.'
+);
 
-$token = '0baab53f5dc2ac3a3ec96253a634224eb63e908dd2e00aa082a245e3fcb9';
+echo $page->url();
 
-$client = new Client;
+/**
+ * Variant 2: Create new TelegraphClient instance when needed
+ * (For working with multiple accounts)
+ */
+$telegraph1 = new TelegraphClient($token);
+$page = $telegraph1->account()->createPage(
+    title: 'Hello World',
+    content: 'This is a Hello World example.'
+);
 
-$page = $client->createPage($token, 'Hello World', 'This is a Hello World example.');
+/**
+ * Variant 3: Switch between accounts dynamically
+ */
+class AccountManager
+{
+    private array $clients = [];
 
-// Or pass Account instance as token.
-$page = $client->createPage($account, 'Hello World', 'This is a Hello World example.');
+    public function addAccount(string $name, string $token): void
+    {
+        $this->clients[$name] = new TelegraphClient($token);
+    }
+
+    public function getAccount(string $name)
+    {
+        return $this->clients[$name]->account();
+    }
+}
+
+$manager = new AccountManager();
+$manager->addAccount('account1', $token);
+$manager->addAccount('account2', 'another_token');
+
+$page = $manager->getAccount('account1')->createPage(
+    title: 'Hello World',
+    content: 'Example'
+);

@@ -1,19 +1,29 @@
 <?php
 
-use Telegraph\Client;
-use Telegraph\Types\Page;
+use Telegraph\TelegraphClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$client = new Client;
+$token = '13a7d37c495d339a2002454f7bfd2d32eb205d5f29c3b7dc3bf5d8ba15d0';
 
-$token = '0baab53f5dc2ac3a3ec96253a634224eb63e908dd2e00aa082a245e3fcb9';
+$telegraph = new TelegraphClient($token);
+$account = $telegraph->account();
 
-// iteration of all pages until the last one
-$client->getPageListWithPagination($token, offset: 0, limit: 50, function (Page $page) use ($client) {
-    $details = $client->getPage($page, true); // get content of page
+$offset = 0;
+$limit = 1;
 
-    $text = $details->getText(); // get text (its custom method)
+do {
+    // Get pages batch
+    $pages = $account->pages(offset: $offset, limit: $limit);
+    $count = $pages->total();
 
-    echo $text . PHP_EOL;
-});
+    // Iterate through pages
+    foreach ($pages as $page) {
+        echo '[' . $page->viewsCount() . '] '
+             . $page->title() . ' --> '
+             . $page->url() . PHP_EOL;
+    }
+
+    $offset += $limit;
+
+} while ($count === $limit);
