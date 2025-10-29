@@ -29,7 +29,7 @@ composer require chipslays/telegraph
 use Telegraph\Telegraph;
 
 // Create client
-$telegraph = new Telegraph();
+$telegraph = new Telegraph;
 
 // Create account
 $account = $telegraph->createAccount(
