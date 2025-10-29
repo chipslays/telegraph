@@ -4,7 +4,6 @@ Modern PHP library for Telegraph API. Telegraph is a minimalist anonymous publis
 
 ## Features
 
-Features
 - 🚀 Simple & Intuitive API - Fluent interface for easy content building
 - 🎨 Rich Content Support - Headers, paragraphs, lists, images, videos, code blocks
 - 🔄 HTML Conversion - Automatic HTML to Telegraph format conversion with sanitization
