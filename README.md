@@ -52,8 +52,8 @@ echo "Published: " . $page->url();
 ```php
 $html = <<<HTML
     <h1>Article Title</h1>
-    <p class="lead">Introduction with <strong>bold</strong> text.</p>
-    <img src="https://example.com/image.jpg" alt="Image" />
+    <p>Introduction with <strong>bold</strong> text.</p>
+    <img src="https://example.com/image.jpg" />
     <p>Regular paragraph with <a href="https://example.com">link</a>.</p>
     <ul>
         <li>First item</li>
